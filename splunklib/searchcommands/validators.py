@@ -153,7 +153,25 @@ class File(Validator):
     _var_run_splunk = os.path.join(
         os.environ['SPLUNK_HOME'] if 'SPLUNK_HOME' in os.environ else getcwd(), 'var', 'run', 'splunk')
 
+    
+class Float(Validator):
+    """ Validates Float option values.
 
+    """
+    def __call__(self, value):
+        if value is None:
+            return None
+        try:
+            value = float(value)
+        except ValueError:
+            raise ValueError('Expected float/integer value not {}'.format(json_encode_string(value)))
+
+        return value
+
+    def format(self, value):
+        return None if value is None else unicode(float(value))
+    
+    
 class Integer(Validator):
     """ Validates integer option values.
 
